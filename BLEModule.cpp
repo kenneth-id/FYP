@@ -39,19 +39,19 @@ void BLESetUp(){
   FYP_server->setCallbacks(new FYP_Callbacks());
   //create services
   Serial.println("initializing BLE Services"); 
-  BLEService *thermometer_service = FYP_server->createService(THERMOMETER_SERVICE_UUID);
-  BLEService *heartrate_service = FYP_server->createService(HEARTRATE_SERVICE_UUID);
-  BLEService *linkloss_service = FYP_server->createService(LINKLOSS_SERVICE_UUID);
+  thermometer_service = FYP_server->createService(THERMOMETER_SERVICE_UUID);
+  heartrate_service = FYP_server->createService(HEARTRATE_SERVICE_UUID);
+  linkloss_service = FYP_server->createService(LINKLOSS_SERVICE_UUID);
   //initialize thermometer service
   Serial.println("initializing thermometer Service"); 
-  BLECharacteristic * thermometer_temperature_measurement = thermometer_service->createCharacteristic(THERMOMETER_TEMPERATURE_MEASUREMENT_UUID,
+  thermometer_temperature_measurement = thermometer_service->createCharacteristic(THERMOMETER_TEMPERATURE_MEASUREMENT_UUID,
   BLECharacteristic::PROPERTY_INDICATE
   );
   thermometer_temperature_measurement->addDescriptor(new BLE2902());
   thermometer_service->start();
   //initialize heartrate_service
   Serial.println("initializing heartrate Service"); 
-  BLECharacteristic * heartrate_heartrate_measurement = heartrate_service->createCharacteristic(HEARTRATE_HEARTRATE_MEASUREMENT_UUID,
+  heartrate_heartrate_measurement = heartrate_service->createCharacteristic(HEARTRATE_HEARTRATE_MEASUREMENT_UUID,
   BLECharacteristic::PROPERTY_NOTIFY
   );
   heartrate_heartrate_measurement->addDescriptor(new BLE2902());
