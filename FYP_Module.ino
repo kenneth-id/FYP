@@ -1,4 +1,8 @@
-#include "BLEModule.h"
+#include <heartRate.h>
+#include <MAX30105.h>
+#include <spo2_algorithm.h>
+
+#include "src/BLE/BLEModule.h"
 
 //TODO: create event handler for server
 //TODO: create event handler for characteristics 
@@ -9,7 +13,7 @@ bool deviceConnected = false;
 uint8_t link_loss_alert_level = 0;
 uint8_t NO_ALERT =0;
 
- uint8_t currentHeartrate[2];
+uint8_t currentHeartrate[2];
 
 BLEService *thermometer_service=NULL;
 BLEService *heartrate_service=NULL;  
