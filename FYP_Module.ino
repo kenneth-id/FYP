@@ -19,7 +19,7 @@ BLEService *linkloss_service=NULL;
 BLECharacteristic * heartrate_heartrate_measurement=NULL;
 BLECharacteristic * thermometer_temperature_measurement=NULL;
 
-HRSensor * myHRSensor = new HRSensor();
+HRSensor * myHRSensor = NULL;
 
 void blink(uint8_t pin, uint_fast32_t interval){
     digitalWrite(pin,HIGH);
@@ -32,10 +32,11 @@ void setup() {
   Serial.println("Starting FYP Module!");
   pinMode(2,OUTPUT); //for on board LED 
   // BLESetUp();
+  myHRSensor = new HRSensor();
 }
 
 void loop() {
-  if(deviceConnected){
+  // if(deviceConnected){
     digitalWrite(2,LOW);
     // currentHeartrate[0] = 0;
     // currentHeartrate[1] = 65;
@@ -45,9 +46,9 @@ void loop() {
     myHRSensor->startReading();
     Serial.println(myHRSensor->getCurrentHeartRate());
 
-  }
-  if((link_loss_alert_level==2) && !deviceConnected){
-    blink(2,500); //blink onboard LED
-  }
-  delay(4);
+  // }
+  // if((link_loss_alert_level==2) && !deviceConnected){
+  //   blink(2,500); //blink onboard LED
+  // }
+  // delay(4);
 }
