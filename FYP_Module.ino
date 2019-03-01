@@ -1,5 +1,5 @@
 #include "src/BLE/BLEModule.h"
-#include "src/HRSensor/HRSensor.h"
+#include "src/HRModule/HRModule.h"
 
 //TODO: create event handler for server
 //TODO: create event handler for characteristics 
@@ -19,7 +19,7 @@ BLEService *linkloss_service=NULL;
 BLECharacteristic * heartrate_heartrate_measurement=NULL;
 BLECharacteristic * thermometer_temperature_measurement=NULL;
 
-HRSensor * myHRSensor = NULL;
+HRModule * myHRModule = NULL;
 
 void blink(uint8_t pin, uint_fast32_t interval){
     digitalWrite(pin,HIGH);
@@ -32,7 +32,7 @@ void setup() {
   Serial.println("Starting FYP Module!");
   pinMode(2,OUTPUT); //for on board LED 
   // BLESetUp();
-  myHRSensor = new HRSensor();
+  myHRModule = new HRModule();
 }
 
 void loop() {
@@ -43,8 +43,8 @@ void loop() {
     // heartrate_heartrate_measurement->setValue(currentHeartrate,2);
     // heartrate_heartrate_measurement->notify();
 
-    myHRSensor->startReading();
-    Serial.println(myHRSensor->getCurrentHeartRate());
+    myHRModule->startReading();
+    Serial.println(myHRModule->getCurrentHeartRate());
 
   // }
   // if((link_loss_alert_level==2) && !deviceConnected){

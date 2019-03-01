@@ -1,6 +1,6 @@
-#include "HRSensor.h"
+#include "HRModule.h"
 
-HRSensor::HRSensor():autocorr_transformed(),rawData(){
+HRModule::HRModule():autocorr_transformed(),rawData(){
     //Use default I2C port, 400kHz speed
     particleSensor = new MAX30105();
     if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
@@ -21,7 +21,7 @@ HRSensor::HRSensor():autocorr_transformed(),rawData(){
     Serial.println("inside HRSensor constructor");
 }
 
-HRSensor::HRSensor(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange){
+HRModule::HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange){
     particleSensor = new MAX30105();
     //Use default I2C port, 400kHz speed
     if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
@@ -33,7 +33,7 @@ HRSensor::HRSensor(byte ledBrightness, byte sampleAverage, byte ledMode, int sam
     N_Min=(int)samplingRate*0.5;
     N_Max=(int)samplingRate*1.2;
 }
-void HRSensor::startReading(){
+void HRModule::startReading(){
     Serial.println("inside startReading function");
     if(particleSensor->getIR()>50000){
         Serial.println("Start sensor reading!");
@@ -58,13 +58,13 @@ void HRSensor::startReading(){
         Serial.println("Finger not detected.");
     }
 }
-uint8_t HRSensor::getCurrentHeartRate(){
+uint8_t HRModule::getCurrentHeartRate(){
     Serial.println("inside getCurrentHeartRate function");
     return currentHeartRate;
 }
 
 //https://www.alanzucconi.com/2016/06/06/autocorrelation-function/
-void HRSensor::autoCorrelation (uint32_t inputArray[]){
+void HRModule::autoCorrelation (uint32_t inputArray[]){
     float mean = Mean(inputArray);
     // int inputLength= sizeof(inputArray)/sizeof(uint32_t);
     // int autocorrLength= sizeof(autocorr_transformed)/sizeof(float);
@@ -87,7 +87,7 @@ void HRSensor::autoCorrelation (uint32_t inputArray[]){
     }
 }
 
-float HRSensor::Mean(uint32_t inputArray[]){
+float HRModule::Mean(uint32_t inputArray[]){
     int arrayLength= sizeof(inputArray)/sizeof(uint32_t);
     float sum =0.0;
     for(int i=0; i< arrayLength;i++){
@@ -97,7 +97,7 @@ float HRSensor::Mean(uint32_t inputArray[]){
     return mean;
 }
 
-int HRSensor::getMaxIndex(float inputArray[],int begin, int end){
+int HRModule::getMaxIndex(float inputArray[],int begin, int end){
     float tempMax= inputArray[begin];
     int maxIndex=begin;
     for(int i=begin; i<end; i++){
@@ -110,6 +110,6 @@ int HRSensor::getMaxIndex(float inputArray[],int begin, int end){
     return maxIndex;
 }
 
-void HRSensor::debug(){
+void HRModule::debug(){
     Serial.println("Inside debug function");
 }

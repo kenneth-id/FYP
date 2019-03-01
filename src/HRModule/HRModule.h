@@ -8,10 +8,10 @@
 #define AUTOCORR_ARRAY_LENGTH HR_ARRAY_LENGTH/2
 
 
-class HRSensor {
+class HRModule {
     public:
-    HRSensor();
-    HRSensor(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange);
+    HRModule();
+    HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange);
     void startReading();
     uint8_t getCurrentHeartRate();
     void debug();
