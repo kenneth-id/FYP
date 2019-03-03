@@ -109,7 +109,3 @@ int HRModule::getMaxIndex(float inputArray[],int begin, int end){
     }
     return maxIndex;
 }
-
-void HRModule::debug(){
-    Serial.println("Inside debug function");
-}

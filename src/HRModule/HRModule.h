@@ -1,9 +1,10 @@
 #ifndef HRSENSOR_H_
+#define HRSENSOR_H_
+
 #include <Wire.h>
 #include <heartRate.h>
 #include <MAX30105.h>
 #include <spo2_algorithm.h>
-#define HRSENSOR_H_
 #define HR_ARRAY_LENGTH 400
 #define AUTOCORR_ARRAY_LENGTH HR_ARRAY_LENGTH/2
 
@@ -14,7 +15,6 @@ class HRModule {
     HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange);
     void startReading();
     uint8_t getCurrentHeartRate();
-    void debug();
 
     private:
     uint8_t currentHeartRate;
