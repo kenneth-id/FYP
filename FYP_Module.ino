@@ -37,7 +37,7 @@ void setup() {
 
 void loop() {
   // if(deviceConnected){
-    digitalWrite(2,LOW);
+    digitalWrite(2,HIGH);
     // currentHeartrate[0] = 0;
     // currentHeartrate[1] = 65;
     // heartrate_heartrate_measurement->setValue(currentHeartrate,2);
