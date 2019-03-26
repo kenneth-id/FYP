@@ -27,6 +27,7 @@ class HRModule {
     float Mean(uint32_t inputArray[]);
     void autoCorrelation (uint32_t inputArray[]);
     int getMaxIndex(float inputArray[],int begin, int end);
+    unsigned long lastReadTime;
 
     int samplingRate;
     int N_Min;

@@ -5,8 +5,6 @@
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 #include "BLEModule.h"
-#define THERMOMETER_SERVICE_UUID "1809"
-#define THERMOMETER_TEMPERATURE_MEASUREMENT_UUID "2A1C"
 #define HEARTRATE_SERVICE_UUID "180D"
 #define HEARTRATE_HEARTRATE_MEASUREMENT_UUID "2A37"
 #define LINKLOSS_SERVICE_UUID "1803"

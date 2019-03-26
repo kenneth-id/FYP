@@ -18,6 +18,7 @@ HRModule::HRModule():autocorr_transformed(),rawData(){
     N_Min=(int)samplingRate*0.5;
     N_Max=(int)samplingRate*1.2;
     currentHeartRate=0;
+    lastReadTime=0.0;
     Serial.println("inside HRSensor constructor");
 }
 
