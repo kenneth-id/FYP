@@ -24,17 +24,16 @@ HRModule::HRModule():autocorr_transformed(),rawData(){
 
 HRModule::HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange){
     particleSensor = new MAX30105();
-    //Use default I2C port, 400kHz speed
-    if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
-        Serial.println("MAX30105 was not found. Please check wiring/power. ");
-        while (1);
-    }
     particleSensor->setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
     samplingRate= sampleRate/sampleAverage;
     N_Min=(int)samplingRate*0.5;
     N_Max=(int)samplingRate*1.2;
 }
 void HRModule::startReading(){
+    //Use default I2C port, 400kHz speed
+    if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
+        Serial.println("MAX30105 was not found. Please check wiring/power. ");
+    }
     Serial.println("inside startReading function");
     if(particleSensor->getIR()>50000){
         Serial.println("Start sensor reading!");
@@ -67,15 +66,6 @@ uint8_t HRModule::getCurrentHeartRate(){
 //https://www.alanzucconi.com/2016/06/06/autocorrelation-function/
 void HRModule::autoCorrelation (uint32_t inputArray[]){
     float mean = Mean(inputArray);
-    // int inputLength= sizeof(inputArray)/sizeof(uint32_t);
-    // int autocorrLength= sizeof(autocorr_transformed)/sizeof(float);
-    // for(int i=0; i< HR_ARRAY_LENGTH;i++){
-    //     Serial.println(inputArray[i]);
-    // }
-    // Serial.print("inputLength= ");
-    // Serial.println(inputLength);
-    // Serial.print("autocorrLength= ");
-    // Serial.println(autocorrLength);
     for (int t = 0; t < AUTOCORR_ARRAY_LENGTH; t ++){ // 200 is hardcoded, plz change
         float Numerator = 0.0; // Numerator
         float Denominator = 0.0; // Denominator
