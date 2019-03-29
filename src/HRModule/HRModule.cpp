@@ -19,6 +19,7 @@ HRModule::HRModule():autocorr_transformed(),rawData(){
     N_Max=(int)samplingRate*1.2;
     currentHeartRate=0;
     lastReadTime=0.0;
+    BLESetup();
     Serial.println("inside HRSensor constructor");
 }
 
@@ -99,4 +100,12 @@ int HRModule::getMaxIndex(float inputArray[],int begin, int end){
         }
     }
     return maxIndex;
+}
+void HRModule::BLESetup(){
+    heartrate_service = FYP_server->createService(HEARTRATE_SERVICE_UUID);
+    heartrate_heartrate_measurement = heartrate_service->createCharacteristic(HEARTRATE_HEARTRATE_MEASUREMENT_UUID,
+                                                        BLECharacteristic::PROPERTY_NOTIFY
+                                                        );
+    heartrate_heartrate_measurement->addDescriptor(new BLE2902());
+    heartrate_service->start();
 }
