@@ -16,13 +16,15 @@
 #define HEARTRATE_HEARTRATE_MEASUREMENT_UUID "2A37"
 #define HEARTRATE_HEARTRATE_READ_UUID "783430ee-d3c5-4134-963d-4ff80878127c"
 
-// static uint8_t  SensorReadInitial=0;
+extern uint8_t  INITIAL_STATE;
+extern uint8_t  STATE_ONE;
 extern BLEServer *FYP_server;
 class HRModule {
     public:
     HRModule();
     HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange);
     void startReading();
+    uint8_t getReadStateValue();
     uint8_t getCurrentHeartRate();
 
     private:
@@ -36,7 +38,7 @@ class HRModule {
 
     float autocorr_transformed[AUTOCORR_ARRAY_LENGTH];
     uint32_t rawData[HR_ARRAY_LENGTH];
-    uint8_t currentHeartRate;
+    uint8_t currentHeartRate[2];
     
     float Mean(uint32_t inputArray[]);
     void autoCorrelation (uint32_t inputArray[]);

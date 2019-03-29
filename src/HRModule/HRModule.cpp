@@ -1,6 +1,7 @@
 #include "HRModule.h"
 
 HRModule::HRModule():autocorr_transformed(),rawData(){
+    Serial.println("inside HRSensor constructor");
     //Use default I2C port, 400kHz speed
     particleSensor = new MAX30105();
     // if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
@@ -17,13 +18,14 @@ HRModule::HRModule():autocorr_transformed(),rawData(){
     samplingRate= sampleRate/sampleAverage;
     N_Min=(int)samplingRate*0.5;
     N_Max=(int)samplingRate*1.2;
-    currentHeartRate=0;
+    currentHeartRate[0]=0;
+    currentHeartRate[1]=0;
     lastReadTime=0.0;
     BLESetup();
-    Serial.println("inside HRSensor constructor");
 }
 
 HRModule::HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange){
+    Serial.println("inside HRSensor constructor");
     particleSensor = new MAX30105();
     // particleSensor->setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
     this->ledBrightness = ledBrightness; //Options: 0=Off to 255=50mA
@@ -36,10 +38,14 @@ HRModule::HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sam
     samplingRate= sampleRate/sampleAverage;
     N_Min=(int)samplingRate*0.5;
     N_Max=(int)samplingRate*1.2;
-    currentHeartRate=0;
+    currentHeartRate[0]=0;
+    currentHeartRate[1]=0;
     lastReadTime=0.0;
     BLESetup();
-    Serial.println("inside HRSensor constructor");
+}
+uint8_t HRModule::getReadStateValue(){
+    uint8_t * state =heartrate_HRRead->getData();
+    return *state;
 }
 void HRModule::startReading(){
     //Use default I2C port, 400kHz speed
@@ -65,7 +71,11 @@ void HRModule::startReading(){
         int HBR= 60*samplingRate/(peakIndex);
         Serial.print("HBR= ");
         Serial.println(HBR);
-        currentHeartRate=HBR;
+        currentHeartRate[0]=0;
+        currentHeartRate[1]=HBR;
+        heartrate_HRMeasurement->setValue(currentHeartRate,2);
+        heartrate_HRMeasurement->notify();
+        heartrate_HRRead->setValue(&INITIAL_STATE,1);
     }
     else{
         Serial.println("Finger not detected.");
@@ -73,7 +83,7 @@ void HRModule::startReading(){
 }
 uint8_t HRModule::getCurrentHeartRate(){
     Serial.println("inside getCurrentHeartRate function");
-    return currentHeartRate;
+    return currentHeartRate[1];
 }
 
 //https://www.alanzucconi.com/2016/06/06/autocorrelation-function/
@@ -125,9 +135,7 @@ void HRModule::BLESetup(){
                                                         BLECharacteristic::PROPERTY_WRITE | 
                                                         BLECharacteristic::PROPERTY_READ
                                                         );
-    heartrate_HRRead->addDescriptor(new BLE2902());
-
     heartrate_service->addCharacteristic(heartrate_HRRead);
-    // heartrate_HRRead->setValue(&SensorReadInitial,1);
+    heartrate_HRRead->setValue(&INITIAL_STATE,1);
     heartrate_service->start();
 }

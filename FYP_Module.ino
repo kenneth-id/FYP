@@ -10,6 +10,8 @@ bool deviceConnected = false;
 // uint8_t currentHeartrate[2];
 BLEServer * FYP_server=NULL;
 HRModule * myHRModule = NULL;
+uint8_t INITIAL_STATE=0;
+uint8_t STATE_ONE=1;
 
 void blink(uint8_t pin, uint_fast32_t interval){
     digitalWrite(pin,HIGH);
@@ -28,10 +30,13 @@ void setup() {
 }
 
 void loop() {
-  // if(deviceConnected){
+  if(deviceConnected){
     digitalWrite(12,HIGH);
     digitalWrite(13,HIGH);
     digitalWrite(14,HIGH);
+    if(myHRModule->getReadStateValue()==1){
+      myHRModule->startReading();
+    }
     // currentHeartrate[0] = 0;
     // currentHeartrate[1] = 65;
     // heartrate_heartrate_measurement->setValue(currentHeartrate,2);
@@ -40,7 +45,7 @@ void loop() {
     // myHRModule->startReading();
     // Serial.println(myHRModule->getCurrentHeartRate());
 
-  // }
+  }
   // if((link_loss_alert_level==2) && !deviceConnected){
   //   blink(2,500); //blink onboard LED
   // }
