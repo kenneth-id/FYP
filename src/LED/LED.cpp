@@ -4,6 +4,9 @@ void initLED() {
     pinMode(LED1, OUTPUT);
     pinMode(LED2, OUTPUT);
     pinMode(LED3, OUTPUT);
+    digitalWrite(LED1, LOW);
+    digitalWrite(LED2, LOW);
+    digitalWrite(LED3, LOW);
 }
 
 void setLED(uint8_t L1, uint8_t L2, uint8_t L3) {
@@ -20,7 +23,7 @@ void initRGB() {
     // ledcSetup(1, 12000, 8);
     // ledcSetup(2, 12000, 8);
     // ledcSetup(3, 12000, 8);
-    pinMode(RGB,OUTPUT);
+    pinMode(RGB, OUTPUT);
     pinMode(RGB_RED, OUTPUT);
     pinMode(RGB_GREEN, OUTPUT);
     pinMode(RGB_BLUE, OUTPUT);
