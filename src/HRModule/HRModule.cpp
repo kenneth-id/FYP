@@ -114,11 +114,20 @@ int HRModule::getMaxIndex(float inputArray[],int begin, int end){
     return maxIndex;
 }
 void HRModule::BLESetup(){
+    Serial.println("initializing heartrate Service");
     heartrate_service = FYP_server->createService(HEARTRATE_SERVICE_UUID);
     heartrate_HRMeasurement = heartrate_service->createCharacteristic(HEARTRATE_HEARTRATE_MEASUREMENT_UUID,
                                                         BLECharacteristic::PROPERTY_NOTIFY
                                                         );
     heartrate_HRMeasurement->addDescriptor(new BLE2902());
+
+    heartrate_HRRead = new BLECharacteristic(HEARTRATE_HEARTRATE_READ_UUID,
+                                                        BLECharacteristic::PROPERTY_WRITE | 
+                                                        BLECharacteristic::PROPERTY_READ
+                                                        );
+    heartrate_HRRead->addDescriptor(new BLE2902());
+
+    heartrate_service->addCharacteristic(heartrate_HRRead);
+    // heartrate_HRRead->setValue(&SensorReadInitial,1);
     heartrate_service->start();
-    Serial.println("initializing heartrate Service");
 }

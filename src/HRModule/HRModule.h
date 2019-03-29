@@ -14,7 +14,9 @@
 #define AUTOCORR_ARRAY_LENGTH HR_ARRAY_LENGTH/2
 #define HEARTRATE_SERVICE_UUID "180D"
 #define HEARTRATE_HEARTRATE_MEASUREMENT_UUID "2A37"
+#define HEARTRATE_HEARTRATE_READ_UUID "783430ee-d3c5-4134-963d-4ff80878127c"
 
+// static uint8_t  SensorReadInitial=0;
 extern BLEServer *FYP_server;
 class HRModule {
     public:
@@ -46,7 +48,8 @@ class HRModule {
 
     BLEService *heartrate_service;
     BLECharacteristic * heartrate_HRMeasurement;
-
+    BLECharacteristic  * heartrate_HRRead;
+    
     void BLESetup();
 };
 
