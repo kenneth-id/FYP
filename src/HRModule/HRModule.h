@@ -24,24 +24,28 @@ class HRModule {
     uint8_t getCurrentHeartRate();
 
     private:
-    uint8_t currentHeartRate;
+    byte ledBrightness; //Options: 0=Off to 255=50mA
+    byte sampleAverage; //Options: 1, 2, 4, 8, 16, 32
+    byte ledMode; //Options: 1 = Red only, 2 = Red + IR, 3 = Red + IR + Green
+    int sampleRate; //Options: 50, 100, 200, 400, 800, 1000, 1600, 3200
+    int pulseWidth; //Options: 69, 118, 215, 411
+    int adcRange; //Options: 2048, 4096, 8192, 16384
+    MAX30105 * particleSensor;
 
     float autocorr_transformed[AUTOCORR_ARRAY_LENGTH];
     uint32_t rawData[HR_ARRAY_LENGTH];
-
-    MAX30105 * particleSensor;
-
+    uint8_t currentHeartRate;
+    
     float Mean(uint32_t inputArray[]);
     void autoCorrelation (uint32_t inputArray[]);
     int getMaxIndex(float inputArray[],int begin, int end);
     unsigned long lastReadTime;
-
     int samplingRate;
     int N_Min;
     int N_Max;
 
     BLEService *heartrate_service;
-    BLECharacteristic * heartrate_heartrate_measurement;
+    BLECharacteristic * heartrate_HRMeasurement;
 
     void BLESetup();
 };

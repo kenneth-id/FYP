@@ -1,4 +1,4 @@
-#include "src/BLE/BLEModule.h"
+#include "src/BLE/BLEServer.h"
 #include "src/HRModule/HRModule.h"
 
 //TODO: create event handler for server
@@ -7,18 +7,8 @@
 //TODO: define for ECG
 
 bool deviceConnected = false;
-uint8_t link_loss_alert_level = 0;
-uint8_t NO_ALERT =0;
-
 // uint8_t currentHeartrate[2];
-
-BLEService *thermometer_service=NULL;
-BLEService *heartrate_service=NULL;  
-BLEService *linkloss_service=NULL;
-
-BLECharacteristic * heartrate_heartrate_measurement=NULL;
-BLECharacteristic * thermometer_temperature_measurement=NULL;
-
+BLEServer * FYP_server=NULL;
 HRModule * myHRModule = NULL;
 
 void blink(uint8_t pin, uint_fast32_t interval){
@@ -30,21 +20,25 @@ void blink(uint8_t pin, uint_fast32_t interval){
 void setup() {
   Serial.begin(115200);
   Serial.println("Starting FYP Module!");
-  pinMode(2,OUTPUT); //for on board LED 
-  // BLESetUp();
+  pinMode(12,OUTPUT); //for on board LED 
+  pinMode(13,OUTPUT); //for on board LED
+  pinMode(14,OUTPUT); //for on board LED
+  BLESetUp();
   myHRModule = new HRModule();
 }
 
 void loop() {
   // if(deviceConnected){
-    digitalWrite(2,LOW);
+    digitalWrite(12,HIGH);
+    digitalWrite(13,HIGH);
+    digitalWrite(14,HIGH);
     // currentHeartrate[0] = 0;
     // currentHeartrate[1] = 65;
     // heartrate_heartrate_measurement->setValue(currentHeartrate,2);
     // heartrate_heartrate_measurement->notify();
 
-    myHRModule->startReading();
-    Serial.println(myHRModule->getCurrentHeartRate());
+    // myHRModule->startReading();
+    // Serial.println(myHRModule->getCurrentHeartRate());
 
   // }
   // if((link_loss_alert_level==2) && !deviceConnected){

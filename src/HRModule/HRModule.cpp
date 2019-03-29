@@ -3,17 +3,17 @@
 HRModule::HRModule():autocorr_transformed(),rawData(){
     //Use default I2C port, 400kHz speed
     particleSensor = new MAX30105();
-    if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
-        Serial.println("MAX30105 was not found. Please check wiring/power. ");
-        while (1);
-    }
-    byte ledBrightness = 0x1F; //Options: 0=Off to 255=50mA
-    byte sampleAverage = 8; //Options: 1, 2, 4, 8, 16, 32
-    byte ledMode = 2; //Options: 1 = Red only, 2 = Red + IR, 3 = Red + IR + Green
-    int sampleRate = 400; //Options: 50, 100, 200, 400, 800, 1000, 1600, 3200
-    int pulseWidth = 411; //Options: 69, 118, 215, 411
-    int adcRange = 4096; //Options: 2048, 4096, 8192, 16384
-    particleSensor->setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
+    // if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
+    //     Serial.println("MAX30105 was not found. Please check wiring/power. ");
+    //     while (1);
+    // }
+    ledBrightness = 0x1F; //Options: 0=Off to 255=50mA
+    sampleAverage = 8; //Options: 1, 2, 4, 8, 16, 32
+    ledMode = 2; //Options: 1 = Red only, 2 = Red + IR, 3 = Red + IR + Green
+    sampleRate = 400; //Options: 50, 100, 200, 400, 800, 1000, 1600, 3200
+    pulseWidth = 411; //Options: 69, 118, 215, 411
+    adcRange = 4096; //Options: 2048, 4096, 8192, 16384
+    // particleSensor->setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
     samplingRate= sampleRate/sampleAverage;
     N_Min=(int)samplingRate*0.5;
     N_Max=(int)samplingRate*1.2;
@@ -25,16 +25,28 @@ HRModule::HRModule():autocorr_transformed(),rawData(){
 
 HRModule::HRModule(byte ledBrightness, byte sampleAverage, byte ledMode, int sampleRate, int pulseWidth, int adcRange){
     particleSensor = new MAX30105();
-    particleSensor->setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
+    // particleSensor->setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
+    this->ledBrightness = ledBrightness; //Options: 0=Off to 255=50mA
+    this->sampleAverage = sampleAverage; //Options: 1, 2, 4, 8, 16, 32
+    this->ledMode = ledMode; //Options: 1 = Red only, 2 = Red + IR, 3 = Red + IR + Green
+    this->sampleRate = sampleRate; //Options: 50, 100, 200, 400, 800, 1000, 1600, 3200
+    this->pulseWidth = pulseWidth; //Options: 69, 118, 215, 411
+    this->adcRange = adcRange; //Options: 2048, 4096, 8192, 16384
+    
     samplingRate= sampleRate/sampleAverage;
     N_Min=(int)samplingRate*0.5;
     N_Max=(int)samplingRate*1.2;
+    currentHeartRate=0;
+    lastReadTime=0.0;
+    BLESetup();
+    Serial.println("inside HRSensor constructor");
 }
 void HRModule::startReading(){
     //Use default I2C port, 400kHz speed
     if (!particleSensor->begin(Wire, I2C_SPEED_FAST)) {
         Serial.println("MAX30105 was not found. Please check wiring/power. ");
     }
+    particleSensor->setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
     Serial.println("inside startReading function");
     if(particleSensor->getIR()>50000){
         Serial.println("Start sensor reading!");
