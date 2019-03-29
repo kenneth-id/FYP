@@ -22,4 +22,5 @@ void TempModule::BLESetUp(){
     );
     thermometer_temperature_measurement->addDescriptor(new BLE2902());
     thermometer_service->start();
+    Serial.println("initializing thermometer Service");
 }
