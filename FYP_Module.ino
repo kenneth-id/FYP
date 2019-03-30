@@ -1,5 +1,6 @@
 #include "src/BLE/BLEServer.h"
 #include "src/HRModule/HRModule.h"
+#include "src/TempModule/TempModule.h"
 
 //TODO: create event handler for server
 //TODO: create event handler for characteristics 
@@ -7,9 +8,9 @@
 //TODO: define for ECG
 
 bool deviceConnected = false;
-// uint8_t currentHeartrate[2];
 BLEServer * FYP_server=NULL;
 HRModule * myHRModule = NULL;
+TempModule * myTempModule= NULL;
 uint8_t INITIAL_STATE=0;
 uint8_t STATE_ONE=1;
 
@@ -26,7 +27,9 @@ void setup() {
   pinMode(13,OUTPUT); //for on board LED
   pinMode(14,OUTPUT); //for on board LED
   BLESetUp();
+  Wire.begin();
   myHRModule = new HRModule();
+  myTempModule= new TempModule();
 }
 
 void loop() {
@@ -34,20 +37,13 @@ void loop() {
     digitalWrite(12,HIGH);
     digitalWrite(13,HIGH);
     digitalWrite(14,HIGH);
+    // uncomment to test HRModule
     if(myHRModule->getReadStateValue()==1){
       myHRModule->startReading();
     }
-    // currentHeartrate[0] = 0;
-    // currentHeartrate[1] = 65;
-    // heartrate_heartrate_measurement->setValue(currentHeartrate,2);
-    // heartrate_heartrate_measurement->notify();
-
-    // myHRModule->startReading();
-    // Serial.println(myHRModule->getCurrentHeartRate());
-
+    if(myTempModule->getReadStateValue()==1){
+      myTempModule->startReading();
+    }
   }
-  // if((link_loss_alert_level==2) && !deviceConnected){
-  //   blink(2,500); //blink onboard LED
-  // }
   // delay(4);
 }
