@@ -6,10 +6,10 @@
 // Define analog pin
 #define ANALOG1     25
 #define ANALOG2     26
-//TODO: create event handler for server
-//TODO: create event handler for characteristics 
-//TODO: maybe add battery service?
-//TODO: define for ECG
+//TODO: Add bit checking for currently connected sensor
+//TODO: Add button controls
+//TODO: Create better algorithm for TempModule read and sending BLE
+
 
 bool deviceConnected = false;
 BLEServer * FYP_server=NULL;
