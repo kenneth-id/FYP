@@ -1,7 +1,11 @@
 #include "src/BLE/BLEServer.h"
 #include "src/HRModule/HRModule.h"
 #include "src/TempModule/TempModule.h"
+#include "src/ECGModule/ECGModule.h"
 
+// Define analog pin
+#define ANALOG1     25
+#define ANALOG2     26
 //TODO: create event handler for server
 //TODO: create event handler for characteristics 
 //TODO: maybe add battery service?
@@ -11,6 +15,7 @@ bool deviceConnected = false;
 BLEServer * FYP_server=NULL;
 HRModule * myHRModule = NULL;
 TempModule * myTempModule= NULL;
+ECGModule * myECGModule= NULL;
 uint8_t INITIAL_STATE=0;
 uint8_t STATE_ONE=1;
 
@@ -26,10 +31,14 @@ void setup() {
   pinMode(12,OUTPUT); //for on board LED 
   pinMode(13,OUTPUT); //for on board LED
   pinMode(14,OUTPUT); //for on board LED
+  Serial.println("initialize Analog pins as INPUT");
+  pinMode(ANALOG1, INPUT);
+  pinMode(ANALOG2, INPUT);
   BLESetUp();
   Wire.begin();
   myHRModule = new HRModule();
   myTempModule= new TempModule();
+  myECGModule= new ECGModule();
 }
 
 void loop() {
@@ -43,6 +52,9 @@ void loop() {
     }
     if(myTempModule->getReadStateValue()==1){
       myTempModule->startReading();
+    }
+    if(myECGModule->getReadStateValue()==1){
+      myECGModule->startReading(ANALOG1);
     }
   }
   // delay(4);
