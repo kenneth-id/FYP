@@ -15,8 +15,9 @@ uint8_t TempModule::getReadStateValue(){
 void TempModule::startReading(){
     tempSensor->begin();
     currentTemperature = tempSensor->getTemperature();
-    int toSend= static_cast<int>(100 * currentTemperature);
+    uint16_t toSend= static_cast<uint16_t>(10 * currentTemperature); //should be int16_t
     Serial.println(toSend);
+    
     // uint8_t toSend[5] = {0,0,0,0,0};
     // uint8_t asInt = *((uint8_t*)&currentTemperature);
     // union {
