@@ -3,6 +3,7 @@
 #include "src/TempModule/TempModule.h"
 #include "src/ECGModule/ECGModule.h"
 #include "src/BitVerification/BitVerification.h"
+#include "src/LED/LED.h"
 
 // Define analog pin
 #define ANALOG1     25

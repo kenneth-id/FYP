@@ -15,11 +15,13 @@ uint8_t ECGModule::getECGRaw(){
 }
 
 void ECGModule::startReading(int pin){
-    rawECG = analogRead(pin);
-    Serial.println(rawECG);
-    ECG_ECGMeasurement->setValue(rawECG);
-    ECG_ECGMeasurement->notify();
-    // delay(1);
+    if(millis() - lastNotify > 4){
+        rawECG = analogRead(pin);
+        Serial.println(rawECG);
+        ECG_ECGMeasurement->setValue(rawECG);
+        ECG_ECGMeasurement->notify();
+        lastNotify= millis();
+    }
 }
 
 void ECGModule::BLESetup(){

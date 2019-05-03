@@ -27,6 +27,7 @@ class ECGModule {
     BLECharacteristic *ECG_ECGMeasurement;
     BLECharacteristic *ECG_ECGRead;
     uint16_t rawECG;
+    unsigned long lastNotify;
     void BLESetup();
 };
 
