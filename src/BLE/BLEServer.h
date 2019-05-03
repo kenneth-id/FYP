@@ -7,7 +7,6 @@
 #include <Arduino.h>
 #include <BLE2902.h> //for client characteristic configuration descriptor
 
-
 extern bool deviceConnected;
 extern BLEServer *FYP_server;
 void BLESetUp();
