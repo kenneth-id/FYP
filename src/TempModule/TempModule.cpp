@@ -46,7 +46,7 @@ void TempModule::startReading(){
     // toSend[1]=reinterpret_cast<unsigned char *>(&currentTemperature);
     thermometer_temperature_measurement->setValue(toSend);
     thermometer_temperature_measurement->indicate();
-    thermometer_tempRead->setValue(&INITIAL_STATE,1);
+    // thermometer_tempRead->setValue(&INITIAL_STATE,1);
     
 }
 
