@@ -3,7 +3,7 @@
 #include "Arduino.h"
 class LED{
     private:
-    int ledPin;      // the number of the LED pin
+    const int ledPin;      // the number of the LED pin
 	long onTime;     // milliseconds of on-time
 	long offTime;    // milliseconds of off-time
     bool blink;

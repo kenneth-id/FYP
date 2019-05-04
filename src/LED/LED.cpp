@@ -1,7 +1,7 @@
 #include "LED.h"
 
-LED::LED(int pin, long on, long off,bool blink){
-    ledPin = pin;
+LED::LED(int pin, long on, long off,bool blink): ledPin(pin){
+    // ledPin = pin;
 	pinMode(ledPin, OUTPUT);     
 	this->blink= blink;
 	onTime = on;
