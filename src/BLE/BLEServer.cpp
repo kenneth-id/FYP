@@ -22,17 +22,26 @@ void BLESetUpAdvertising(){
   pAdvertising->setMinPreferred(0x06);  
   pAdvertising->setMinPreferred(0x12);
   BLEDevice::startAdvertising();
+  rgbLED->setBlink(true);
+  rgbLED->setColor(HIGH,HIGH,LOW);
+  rgbLED->setRGBState(HIGH);
 }
 void BLESetUp(){
   class FYP_Callbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
       deviceConnected = true;
       Serial.println("Phone Connected");
+      rgbLED->setBlink(false);
+      rgbLED->setColor(HIGH,HIGH,LOW);
+      rgbLED->setRGBState(HIGH);
     };
 
     void onDisconnect(BLEServer* pServer) {
       deviceConnected = false;
       Serial.println("Phone Disconnected");
+      rgbLED->setBlink(true);
+      rgbLED->setColor(LOW,HIGH,HIGH);
+      rgbLED->setRGBState(HIGH);
     }
 };
   Serial.println("Starting BLEServerSetUp"); 

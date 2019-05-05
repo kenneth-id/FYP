@@ -4,13 +4,11 @@
 #include "src/ECGModule/ECGModule.h"
 #include "src/BitVerification/BitVerification.h"
 #include "src/LED/LED.h"
+#include "src/RGB/RGB.h"
 
 // Define analog pin
 #define ANALOG1     25
 #define ANALOG2     26
-
-//TODO: Add button controls
-//TODO: Create better algorithm for TempModule read and sending BLE
 
 bool deviceConnected = false;
 BitVerification * bitVerification= NULL;
@@ -19,15 +17,23 @@ BLEServer * FYP_server=NULL;
 HRModule * myHRModule = NULL;
 TempModule * myTempModule= NULL;
 ECGModule * myECGModule= NULL;
+
+LED * LEDLeft =NULL;
+LED * LEDCenter = NULL;
+LED * LEDRight = NULL;
+RGB * rgbLED= NULL;
+
 uint8_t INITIAL_STATE=0;
 uint8_t STATE_ONE=1;
   
 void setup() {
   Serial.begin(115200);
   Serial.println("Starting FYP Module!");
-  pinMode(12,OUTPUT); //for on board LED 
-  pinMode(13,OUTPUT); //for on board LED
-  pinMode(14,OUTPUT); //for on board LED
+  Serial.println("initialize LEDs");
+  LEDLeft = new LED(12,300,300,false);
+  LEDCenter = new LED(13,300,300,false);
+  LEDRight = new LED(14,300,300,false);
+  rgbLED= new RGB(0,0,0,300,300,false);
   Serial.println("initialize Analog pins as INPUT");
   pinMode(ANALOG1, INPUT);
   pinMode(ANALOG2, INPUT);
@@ -41,19 +47,43 @@ void setup() {
 
 void loop() {
   bitVerification->updateState();
+  LEDLeft->updateLED();
+  LEDCenter->updateLED();
+  LEDRight->updateLED();
+  rgbLED->updateRGB();
   if(deviceConnected){
-    digitalWrite(12,HIGH);
-    digitalWrite(13,HIGH);
-    digitalWrite(14,HIGH);
-
-    if(myHRModule->getReadStateValue()==1){
-      myHRModule->startReading();
+    //if no sensor module is connected
+    if(bitVerification->getState()==0){
+      LEDLeft->setLEDState(LOW);
+      LEDCenter->setLEDState(LOW);
+      LEDRight->setLEDState(LOW);
     }
-    if(myTempModule->getReadStateValue()==1){
-      myTempModule->startReading();
+    //if HR sensor module is connected
+    if(bitVerification->getState()==1){
+      LEDLeft->setLEDState(HIGH);
+      LEDCenter->setLEDState(LOW);
+      LEDRight->setLEDState(LOW);
+      if(myHRModule->getReadStateValue()==1){
+        myHRModule->startReading();
+      }
     }
-    if(myECGModule->getReadStateValue()==1){
-      myECGModule->startReading(ANALOG1);
+    //if temperature sensor module is connected
+    if(bitVerification->getState()==2){
+      LEDLeft->setLEDState(LOW);
+      LEDCenter->setLEDState(HIGH);
+      LEDRight->setLEDState(LOW);
+      if(myTempModule->getReadStateValue()==1){
+        myTempModule->startReading();
+      }
+    }
+    //if ECG sensor module is connected
+    if(bitVerification->getState()==3){
+      LEDLeft->setLEDState(LOW);
+      LEDCenter->setLEDState(LOW);
+      LEDRight->setLEDState(HIGH);
+      if(myECGModule->getReadStateValue()==1){
+        myECGModule->startReading(ANALOG1);
+      }
     }
   }
   // delay(4);
