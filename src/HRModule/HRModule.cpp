@@ -54,6 +54,8 @@ void HRModule::startReading(){
         Serial.println("Start sensor reading!");
         for(int i=0; i< HR_ARRAY_LENGTH;i++){
             rawData[i]=particleSensor->getIR();
+            heartrate_rawMeasurement->setValue(rawData[i]);
+            heartrate_rawMeasurement->notify();
             // Serial.println(rawData[i]);
         }
         autoCorrelation(rawData);
@@ -126,6 +128,11 @@ void HRModule::BLESetup(){
                                                         BLECharacteristic::PROPERTY_NOTIFY
                                                         );
     heartrate_HRMeasurement->addDescriptor(new BLE2902());
+
+    heartrate_rawMeasurement = heartrate_service->createCharacteristic(HEARTRATE_HEARTRATE_RAW_UUID,
+                                                        BLECharacteristic::PROPERTY_NOTIFY
+                                                        );
+    heartrate_rawMeasurement->addDescriptor(new BLE2902());    
 
     heartrate_HRRead = new BLECharacteristic(HEARTRATE_HEARTRATE_READ_UUID,
                                                         BLECharacteristic::PROPERTY_WRITE | 

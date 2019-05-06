@@ -14,6 +14,7 @@
 #define AUTOCORR_ARRAY_LENGTH HR_ARRAY_LENGTH/2
 #define HEARTRATE_SERVICE_UUID "180D"
 #define HEARTRATE_HEARTRATE_MEASUREMENT_UUID "2A37"
+#define HEARTRATE_HEARTRATE_RAW_UUID "7822b643-a073-471a-af12-fbf8bc2a162f"
 #define HEARTRATE_HEARTRATE_READ_UUID "783430ee-d3c5-4134-963d-4ff80878127c"
 
 extern uint8_t  INITIAL_STATE;
@@ -50,6 +51,7 @@ class HRModule {
 
     BLEService *heartrate_service;
     BLECharacteristic * heartrate_HRMeasurement;
+    BLECharacteristic * heartrate_rawMeasurement;
     BLECharacteristic  * heartrate_HRRead;
     
     void BLESetup();
